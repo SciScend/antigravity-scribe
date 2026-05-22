@@ -5,7 +5,7 @@
   "version": "0.1.0",
   "publisher": "sciscend",
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.120.0"
   },
   "categories": [
     "Other"
@@ -90,7 +90,7 @@
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/turndown": "^5.0.5",
-    "@types/vscode": "^1.85.0",
+    "@types/vscode": "^1.120.0",
     "@types/ws": "^8.5.10",
     "@typescript-eslint/eslint-plugin": "^8.59.3",
     "@typescript-eslint/parser": "^8.59.3",
