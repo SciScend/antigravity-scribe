@@ -75,19 +75,27 @@ export const EXTRACT_JS = `(async function () {
     
     const btns = document.querySelectorAll("#conversation button");
     for (const btn of btns) {
-      // 1. Tool blocks (Worked for, Explored) use lucide-chevron-right SVG
-      const svg = btn.querySelector("svg.lucide-chevron-right");
-      if (svg && !svg.classList.contains("rotate-90")) {
-        btn.click();
-        expandedSomething = true;
-        continue;
-      }
-      
-      // 2. Thought blocks use google-symbols chevron_right span
-      const gs = btn.querySelector("span.google-symbols");
-      if (gs && gs.textContent === "chevron_right" && !gs.classList.contains("rotate-90")) {
-        btn.click();
-        expandedSomething = true;
+      const txt = btn.textContent || "";
+      const isToolOrThoughtBlock =
+        txt.includes("Worked for") ||
+        txt.includes("Explored") ||
+        txt.includes("Edited") ||
+        txt.includes("Thought for") ||
+        txt.includes("Thought");
+
+      if (isToolOrThoughtBlock) {
+        const svg = btn.querySelector("svg");
+        if (svg && !svg.classList.contains("rotate-90")) {
+          btn.click();
+          expandedSomething = true;
+          continue;
+        }
+
+        const gs = btn.querySelector("span.google-symbols");
+        if (gs && gs.textContent === "chevron_right" && !gs.classList.contains("rotate-90")) {
+          btn.click();
+          expandedSomething = true;
+        }
       }
     }
     
