@@ -19,7 +19,7 @@ This extension contributes the following settings:
 
 * `agscribe.vaultPath`: **(Required)** Absolute path to your Obsidian vault root.
 * `agscribe.vaultFolder`: Folder inside the vault for session notes (default: `AgentSessions`).
-* `agscribe.brainPath`: Path to Antigravity brain directory (default: `~/.gemini/antigravity/brain`).
+* `agscribe.brainPath`: Path to Antigravity brain directory (default: `~/.gemini/antigravity-ide/brain`).
 * `agscribe.port`: CDP remote debugging port (default: `9222`).
 * `agscribe.openAfterCapture`: Automatically open the captured note in the editor (default: `true`).
 
@@ -56,7 +56,7 @@ You should see:
 === Antigravity Scribe Diagnostics ===
 
 ✅ CDP port 9222: Antigravity - my-project
-✅ Brain path:    /home/yourname/.gemini/antigravity/brain
+✅ Brain path:    /home/yourname/.gemini/antigravity-ide/brain
    Active brain UUID: 50fa0573-52e0-4755-96f4-c98d1e808133
 ✅ Vault path:    /home/yourname/Obsidian/Vault
 ```

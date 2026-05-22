@@ -17,7 +17,7 @@ export async function runSnap(task: string): Promise<SnapResult> {
   const port = cfg.get<number>("port", 9222);
   const vaultPath = cfg.get<string>("vaultPath", "");
   const vaultFolder = cfg.get<string>("vaultFolder", "AgentSessions");
-  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
+  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity-ide/brain");
 
   const wsFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? process.cwd();
 
@@ -100,7 +100,7 @@ export async function runDiagnose(out: vscode.OutputChannel): Promise<void> {
   const cfg = vscode.workspace.getConfiguration("agscribe");
   const port = cfg.get<number>("port", 9222);
   const vaultPath = cfg.get<string>("vaultPath", "");
-  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
+  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity-ide/brain");
 
   out.clear();
   out.show(true);

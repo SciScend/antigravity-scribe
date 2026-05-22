@@ -55,7 +55,7 @@
         },
         "agscribe.brainPath": {
           "type": "string",
-          "default": "~/.gemini/antigravity/brain",
+          "default": "~/.gemini/antigravity-ide/brain",
           "description": "Local path to the Antigravity 'brain' directory where session artifacts are stored. Supports '~' expansion for the home directory."
         },
         "agscribe.vaultPath": {

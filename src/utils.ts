@@ -29,9 +29,29 @@ export function expandHome(p: string): string {
  * Returns the most recently modified directory in the brain path.
  */
 export function getActiveBrainUuid(brainPath: string): { uuid: string | null; fullPath: string } {
-  const fullPath = expandHome(brainPath);
+  let fullPath = expandHome(brainPath);
 
   try {
+    if (!fs.existsSync(fullPath)) {
+      if (fullPath.includes("/.gemini/antigravity/brain")) {
+        const fallbackPath = fullPath.replace(
+          "/.gemini/antigravity/brain",
+          "/.gemini/antigravity-ide/brain",
+        );
+        if (fs.existsSync(fallbackPath)) {
+          fullPath = fallbackPath;
+        }
+      } else if (fullPath.includes("/.gemini/antigravity-ide/brain")) {
+        const fallbackPath = fullPath.replace(
+          "/.gemini/antigravity-ide/brain",
+          "/.gemini/antigravity/brain",
+        );
+        if (fs.existsSync(fallbackPath)) {
+          fullPath = fallbackPath;
+        }
+      }
+    }
+
     const entries = fs.readdirSync(fullPath, { withFileTypes: true });
     let latestUuid: string | null = null;
     let maxMtime = 0;
