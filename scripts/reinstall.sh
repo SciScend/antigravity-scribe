@@ -14,8 +14,8 @@ npm run package
 
 PROFILE_HOME="${ANTIGRAVITY_PROFILE_DIR:-$HOME}"
 HOME="$PROFILE_HOME" \
-  antigravity \
-  --extensions-dir="$PROFILE_HOME/.antigravity/extensions" \
+  antigravity-ide \
+  --extensions-dir="$PROFILE_HOME/.antigravity-ide/extensions" \
   --install-extension ./antigravity-scribe-*.vsix
 
 # Run repomix - rebuild context
