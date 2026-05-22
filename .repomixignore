@@ -2,3 +2,17 @@
 # Example:
 # *.log
 # tmp/
+
+# Package Lock files (large, auto-generated files that bloat token count)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Binary assets and logos
+assets/
+icon.png
+
+# Build artifacts
+*.vsix
+dist/
