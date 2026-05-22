@@ -40,3 +40,6 @@ Thumbs.db
 .debug
 .docs
 tmp/**
+.antigravitycli/**
+.agents/prompts/_scratch/
+repomix-output.xml
