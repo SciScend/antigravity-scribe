@@ -13,12 +13,20 @@ fi
 npm run package
 
 PROFILE_HOME="${ANTIGRAVITY_PROFILE_DIR:-$HOME}"
-HOME="$PROFILE_HOME" \
-  antigravity-ide \
-  --extensions-dir="$PROFILE_HOME/.antigravity-ide/extensions" \
-  --install-extension ./antigravity-scribe-*.vsix
+EXTENSIONS_DIR="$PROFILE_HOME/.antigravity-ide/extensions"
+VSIX=$(ls ./antigravity-scribe-*.vsix | head -1)
+
+EXT_DIR=$(unzip -p "$VSIX" extension/package.json | python3 -c "
+import sys, json; p = json.load(sys.stdin)
+print(f\"{p['publisher']}.{p['name']}-{p['version']}\")")
+
+rm -rf "$EXTENSIONS_DIR/$EXT_DIR"
+mkdir -p "$EXTENSIONS_DIR/$EXT_DIR"
+unzip -q "$VSIX" "extension/*" -d "$EXTENSIONS_DIR/$EXT_DIR"
+mv "$EXTENSIONS_DIR/$EXT_DIR/extension/"* "$EXTENSIONS_DIR/$EXT_DIR/"
+rm -rf "$EXTENSIONS_DIR/$EXT_DIR/extension"
 
 # Run repomix - rebuild context
 repomix
 
-echo "✓ Context Updated & Extension Installed — reload Antigravity window"
+echo "✓ Installed: $EXT_DIR — reload Antigravity window (Ctrl+Shift+P → Developer: Reload Window)"
