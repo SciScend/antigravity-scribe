@@ -73,15 +73,24 @@ export const EXTRACT_JS = `(async function () {
     expandedSomething = false;
     iterations++;
     
-    const btns = document.querySelectorAll("#conversation button");
+    const btns = document.querySelectorAll("#conversation button, #conversation div[class*='cursor-pointer'][class*='rounded-lg']");
     for (const btn of btns) {
       const txt = btn.textContent || "";
+      
+      const isShowMore = txt.includes("Show") && txt.includes("more");
+      if (isShowMore && btn.tagName.toLowerCase() === "button") {
+        btn.click();
+        expandedSomething = true;
+        continue;
+      }
+
       const isToolOrThoughtBlock =
         txt.includes("Worked for") ||
         txt.includes("Explored") ||
         txt.includes("Edited") ||
         txt.includes("Thought for") ||
-        txt.includes("Thought");
+        txt.includes("Thought") ||
+        txt.includes("Analyzed");
 
       if (isToolOrThoughtBlock) {
         const svg = btn.querySelector("svg");
@@ -191,15 +200,34 @@ export const EXTRACT_JS = `(async function () {
   function btnParts(btn) {
     const spans = [...btn.children].filter(n => n.tagName === "SPAN");
     let verb = "", detail = "";
-    for (const sp of spans) {
-      const cls = cs(sp);
-      if (cls.includes("google-symbols")) continue;
-      const t = getText(sp);
-      if (!t) continue;
-      if (cls.includes("opacity-70") || cls.includes("cursor-pointer")) {
-        verb = t;
+    const textSpans = spans.filter(sp => !cs(sp).includes("google-symbols"));
+    if (textSpans.length >= 2) {
+      verb = getText(textSpans[0]);
+      detail = getText(textSpans[1]);
+    } else if (textSpans.length === 1) {
+      const fullText = getText(textSpans[0]);
+      if (fullText.startsWith("Worked for")) {
+        verb = "Worked";
+        detail = fullText.substring("Worked".length).trim();
+      } else if (fullText.startsWith("Worked")) {
+        verb = "Worked";
+        detail = fullText.substring("Worked".length).trim();
+      } else if (fullText.startsWith("Explored")) {
+        verb = "Explored";
+        detail = fullText.substring("Explored".length).trim();
+      } else if (fullText.startsWith("Edited")) {
+        verb = "Edited";
+        detail = fullText.substring("Edited".length).trim();
+      } else if (fullText.startsWith("Thought for")) {
+        verb = "Thought";
+        detail = fullText.substring("Thought".length).trim();
+      } else if (fullText.startsWith("Thought")) {
+        verb = "Thought";
+        detail = fullText.substring("Thought".length).trim();
       } else {
-        detail = t;
+        const parts = fullText.split(" ");
+        verb = parts[0];
+        detail = parts.slice(1).join(" ");
       }
     }
     return [verb, detail];
@@ -259,10 +287,48 @@ export const EXTRACT_JS = `(async function () {
   // ── Analyzed action row ─────────────────────────────────────────────────────
 
   function parseAnalyzed(row) {
-    const label = row.querySelector("span.shrink-0.opacity-70");
-    const action = label ? getText(label) : "";
-    const mention = row.querySelector("span.inline-flex.break-all");
-    const fname = mention ? getText(mention) : "";
+    let action = "";
+    const spans = row.querySelectorAll("span");
+    for (const sp of spans) {
+      const txt = clean(sp.textContent);
+      if (txt === "Analyzed" || txt === "Created outline" || txt === "Read page" || txt === "Worked for" || txt === "Explored" || txt === "Edited") {
+        action = txt;
+        break;
+      }
+    }
+    if (!action) {
+      for (const sp of spans) {
+        const cls = cs(sp);
+        if (cls.includes("opacity-70") || cls.includes("text-secondary-foreground") || cls.includes("shrink-0")) {
+          const txt = clean(sp.textContent);
+          if (txt && !cls.includes("google-symbols") && txt.length < 20) {
+            action = txt;
+            break;
+          }
+        }
+      }
+    }
+
+    let fname = "";
+    const detailSp = row.querySelector("span.break-all, span.select-text, span.inline-flex.break-all");
+    if (detailSp) {
+      fname = getText(detailSp);
+    }
+    if (!fname) {
+      const btn = row.querySelector("button");
+      if (btn) {
+        fname = getText(btn);
+      }
+    }
+    if (!fname) {
+      for (const sp of spans) {
+        const cls = cs(sp);
+        if (cls.includes("break-all") || cls.includes("select-text")) {
+          fname = getText(sp);
+          break;
+        }
+      }
+    }
     return { role: "action", label: action, detail: fname, html: null, children: [] };
   }
 
@@ -317,7 +383,7 @@ export const EXTRACT_JS = `(async function () {
       const t = clean(sp.textContent);
       if (!t) continue;
       if (cls.includes("google-symbols")) continue;
-      if (!action && cls.includes("opacity-70")) { action = t; continue; }
+      if (!action && (cls.includes("opacity-70") || cls.includes("text-secondary-foreground"))) { action = t; continue; }
       if (!count && cls.includes("rounded-full")) { count = t; continue; }
       if (!query) { query = t; }
     }
@@ -415,9 +481,18 @@ export const EXTRACT_JS = `(async function () {
             const subChildren = [];
             const subC = child.querySelector("div.overflow-hidden.pl-3");
             if (subC) {
-              for (const sr of subC.querySelectorAll("div.flex.flex-row")) {
-                const sn = parseAnalyzed(sr);
-                if (sn.label || sn.detail) subChildren.push(sn);
+              const rows = subC.querySelectorAll("div.flex.items-center, div.flex.flex-row");
+              for (const sr of rows) {
+                if (sr.querySelector("button, div.cursor-pointer")) {
+                  continue;
+                }
+                const textDiv = sr.querySelector("div.whitespace-nowrap.truncate, div.truncate");
+                if (textDiv) {
+                  const fname = clean(textDiv.textContent);
+                  if (fname && !fname.includes("Show") && !fname.includes("more")) {
+                    subChildren.push({ role: "action", label: fname, detail: "", html: null, children: [] });
+                  }
+                }
               }
             }
             node.children = subChildren;

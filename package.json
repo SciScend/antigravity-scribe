@@ -85,7 +85,8 @@
     "bundle": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify",
     "watch": "npm run bundle -- --watch",
     "package": "npm run bundle && vsce package",
-    "lint": "eslint src --ext ts"
+    "lint": "eslint src --ext ts",
+    "parse-dom": "node /home/nemsys/.gemini/antigravity-cli/brain/c11b6a84-a1dd-46d5-a51d-0499587e3ed8/scratch/parse_dom.js"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
