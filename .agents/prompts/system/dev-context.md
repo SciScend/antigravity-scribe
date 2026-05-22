@@ -6,7 +6,7 @@ A VS Code extension that captures Antigravity IDE agent sessions
 ## Tech stack
 
 - Language: TypeScript, compiled with tsc + bundled with esbuild → dist/extension.js
-- Runtime: Node.js ≥ 18, VS Code API ^1.120.0
+- Runtime: Node.js ≥ 18, VS Code API ^1.107.0
 - Key dependency: turndown (HTML → Markdown conversion for agent responses)
 - WebSocket: ws package for CDP communication
 - No test framework yet
