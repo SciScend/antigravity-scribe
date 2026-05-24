@@ -275,10 +275,16 @@ export const EXTRACT_JS = `(async function () {
     const sp = btn && btn.querySelector("span.cursor-pointer");
     const header = sp ? getText(sp) : (btn ? getText(btn) : "Thought");
 
+    // AG 1.x: content inside div.overflow-hidden.transition-all
+    // AG 2.0: content inside div.overflow-y-auto > ... > div.leading-relaxed
     const cdiv = isolate.querySelector("div.overflow-hidden.transition-all");
     let contentHTML = null;
     if (cdiv) {
       const md = cdiv.querySelector("div.leading-relaxed");
+      if (md) contentHTML = getCleanHTML(md);
+    }
+    if (!contentHTML) {
+      const md = isolate.querySelector("div.leading-relaxed");
       if (md) contentHTML = getCleanHTML(md);
     }
     return { role: "thought", label: header, detail: "", html: contentHTML, children: [] };
