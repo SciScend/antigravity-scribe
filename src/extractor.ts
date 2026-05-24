@@ -478,24 +478,6 @@ export const EXTRACT_JS = `(async function () {
         if (ad) {
           const node = parseAnalyzed(ad);
           if (node.label || node.detail) {
-            const subChildren = [];
-            const subC = child.querySelector("div.overflow-hidden.pl-3");
-            if (subC) {
-              const rows = subC.querySelectorAll("div.flex.items-center, div.flex.flex-row");
-              for (const sr of rows) {
-                if (sr.querySelector("button, div.cursor-pointer")) {
-                  continue;
-                }
-                const textDiv = sr.querySelector("div.whitespace-nowrap.truncate, div.truncate");
-                if (textDiv) {
-                  const fname = clean(textDiv.textContent);
-                  if (fname && !fname.includes("Show") && !fname.includes("more")) {
-                    subChildren.push({ role: "action", label: fname, detail: "", html: null, children: [] });
-                  }
-                }
-              }
-            }
-            node.children = subChildren;
             items.push(node);
           }
           continue;
