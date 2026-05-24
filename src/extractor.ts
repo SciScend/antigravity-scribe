@@ -335,8 +335,13 @@ export const EXTRACT_JS = `(async function () {
   // ── Ran command row ─────────────────────────────────────────────────────────
 
   function parseRan(row) {
-    const sp = row.querySelector("span.font-mono");
-    return { role: "ran", label: "Ran", detail: sp ? clean(sp.textContent) : "", html: null, children: [] };
+    // Try the inline font-mono span first (AG 2.0 header preview),
+    // then fall back to the <pre> inside the expanded command output
+    const sp = row.querySelector("span.font-mono") || row.querySelector("pre.font-mono");
+    let cmd = sp ? clean(sp.textContent) : "";
+    // Strip the CWD prefix like "…/antigravity-scribe $ "
+    cmd = cmd.replace(/^.*?\\$\\s*/, "");
+    return { role: "ran", label: "Ran", detail: cmd, html: null, children: [] };
   }
 
   // ── Artifact card ───────────────────────────────────────────────────────────
@@ -440,6 +445,9 @@ export const EXTRACT_JS = `(async function () {
             }
             
             items.push({ role: "explored", label: v, detail: d, html: null, children });
+          } else if (v === "Thought" || getText(btn).includes("Thought")) {
+            // AG 2.0: Thought blocks inside Explored use div.relative, not div.isolate
+            items.push(parseThought(child));
           }
         } else {
           // No button — plain wrapper div; recurse
@@ -450,15 +458,15 @@ export const EXTRACT_JS = `(async function () {
 
       // ── flex-row divs: Ran / Analyzed ──────────────────────────────────
       if (child.tagName === "DIV" && cls.includes("flex-row")) {
-        // Ran command
-        const ranSp = child.querySelector("span.opacity-70");
+        // Ran command — AG 2.0 uses text-secondary-foreground instead of opacity-70
+        const ranSp = child.querySelector("span.opacity-70, span.text-secondary-foreground");
         if (ranSp && getText(ranSp).includes("Ran")) {
           items.push(parseRan(child));
           continue;
         }
 
         // Searched / Analyzed / other action items:
-        // span.opacity-70 exists but verb isn't "Ran" (e.g. "Searched", "Analyzed")
+        // verb span exists but verb isn't "Ran" (e.g. "Searched", "Analyzed")
         if (ranSp) {
           const node = parseSearchItem(child);
           if (node.label || node.detail) items.push(node);
