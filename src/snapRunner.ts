@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import * as fs from "fs";
 import { findTarget, CDPClient } from "./cdp";
-import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from "./extractor";
+import { EXTRACT_JS, EXTRACT_TITLE_JS, EXTRACT_MODEL_JS, ConvNode } from "./extractor";
 import { renderNote, sessionFilename } from "./renderer";
 import { prepareVault, writeNote } from "./vault";
 import { getActiveBrainUuid } from "./utils";
@@ -36,9 +36,11 @@ export async function runSnap(task: string): Promise<SnapResult> {
 
   let raw: string | null;
   let conversationTitle: string | null;
+  let agentName: string | null = null;
   try {
     raw = await cdp.evalJS(EXTRACT_JS);
     conversationTitle = await cdp.evalJS(EXTRACT_TITLE_JS);
+    agentName = await cdp.evalJS(EXTRACT_MODEL_JS);
   } finally {
     cdp.close();
   }
@@ -82,6 +84,7 @@ export async function runSnap(task: string): Promise<SnapResult> {
     workspacePath: wsFolder,
     brainUuid: brainUuid || undefined,
     brainFullPath: brainFullPath || undefined,
+    agent: agentName || undefined,
   });
 
   const filename = sessionFilename(effectiveTask, now);

@@ -38,6 +38,17 @@ export const EXTRACT_TITLE_JS = `(function () {
 })()`;
 
 // ---------------------------------------------------------------------------
+// Extract model name from the panel header
+// ---------------------------------------------------------------------------
+
+export const EXTRACT_MODEL_JS = `(function () {
+  const el = document.querySelector(
+    "span.min-w-0.select-none.overflow-hidden.text-ellipsis.whitespace-nowrap.text-xs.text-secondary-foreground"
+  );
+  return el ? el.textContent.replace(/\\s+/g, " ").trim() : "antigravity";
+})()`;
+
+// ---------------------------------------------------------------------------
 // Main extraction — returns ConvNode[] as JSON string
 //
 // Ported from scraper.py which handles:

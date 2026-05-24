@@ -6,6 +6,7 @@ export interface RenderOptions {
   workspacePath: string;
   brainUuid?: string;
   brainFullPath?: string;
+  agent?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -211,7 +212,7 @@ export function renderNote(nodes: ConvNode[], opts: RenderOptions): string {
   lines.push("---");
   lines.push(`date: ${now.toISOString().slice(0, 10)}`);
   lines.push(`time: ${now.toTimeString().slice(0, 5)}`);
-  lines.push("agent: antigravity");
+  lines.push(`agent: ${opts.agent || "antigravity"}`);
   lines.push(`task: ${opts.task}`);
   lines.push(`workspace: "${opts.workspacePath}"`);
   if (opts.brainUuid) {
