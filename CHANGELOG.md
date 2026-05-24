@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.2.0] - 2026-05-24
+### Changed
+- **Breaking Change**: Extension now specifically targets Antigravity IDE 2.0. Support for Antigravity IDE 1.x has been dropped due to DOM and structural changes.
+
 ## [0.1.0] - 2026-05-02
 ### Added
 - Initial release
