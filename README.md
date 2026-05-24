@@ -6,7 +6,7 @@ No copy-pasting. No manual logging. No digging through AG's folders. Run the cap
 
 ## Features
 
-- **Full Session Capture:** Automatically extracts chat turns, thinking blocks, tool call summaries. Artifacts are intentionally excluded from the main capture, as they can be easily accessed in brain folder by `brain_path/brain_uuid` given in capture metadata. .
+- **Full Session Capture:** Automatically extracts chat turns, thinking blocks, tool call summaries. Artifacts are intentionally excluded from the main capture, as they can be easily accessed in brain folder by `brain_path/brain_uuid` given in capture metadata.
 - **Obsidian Integration:** Writes notes directly to your vault with proper YAML frontmatter and folder organization.
 - **Auto-Scroll & Expand:** Uses CDP to intelligently scroll the chat panel and expand all collapsed blocks (Worked for, Thought for, Explored) to ensure no content is missed.
 - **Diagnostics:** Built-in connection check to verify your CDP port and brain path configuration.
@@ -91,12 +91,15 @@ The extension generates a structured Markdown file in your vault with:
 
 - **YAML Frontmatter:**
     - `date`, `time`: Capture timestamp.
-    - `agent`: The AI model used (e.g., `antigravity`).
+    - `agent`: The AI model used (e.g., `Gemini 3.1 Pro (High)`).
     - `task`: The task label (e.g., `fixing-antigravity-scribe-counter`).
     - `workspace`: Local path to the project.
-    - `brain_uuid`: Unique ID for the specific session.
+    - `brain_uuid`: Unique ID for the most recently active session folder.
     - `brain_path`: Absolute path to the Antigravity brain data.
     - `tags`: Standard tags like `agent-session` and `antigravity`.
+
+> [!NOTE]
+> **Known Limitation:** The `brain_uuid` currently points to the most *recently modified* session folder on disk. If you are scribing a past conversation loaded from history, the captured UUID will likely be incorrect unless that past conversation was the last one to write to disk. (See [TODO.md](TODO.md) for tracking).
 
 - **Session Content:**
     - `## Session` header.
