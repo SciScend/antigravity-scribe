@@ -78,7 +78,7 @@ export const EXTRACT_JS = `(async function () {
       const txt = btn.textContent || "";
       
       const isShowMore = txt.includes("Show") && txt.includes("more");
-      if (isShowMore && btn.tagName.toLowerCase() === "button") {
+      if (isShowMore) {
         btn.click();
         expandedSomething = true;
         continue;
@@ -271,7 +271,7 @@ export const EXTRACT_JS = `(async function () {
   // ── Thought block ───────────────────────────────────────────────────────────
 
   function parseThought(isolate) {
-    const btn = isolate.querySelector("button");
+    const btn = isolate.querySelector("button, div[class*='cursor-pointer']");
     const sp = btn && btn.querySelector("span.cursor-pointer");
     const header = sp ? getText(sp) : (btn ? getText(btn) : "Thought");
 
@@ -315,7 +315,7 @@ export const EXTRACT_JS = `(async function () {
       fname = getText(detailSp);
     }
     if (!fname) {
-      const btn = row.querySelector("button");
+      const btn = row.querySelector("button, div[class*='cursor-pointer']");
       if (btn) {
         fname = getText(btn);
       }
@@ -408,8 +408,8 @@ export const EXTRACT_JS = `(async function () {
 
       // ── Thought blocks (.isolate) ──────────────────────────────────────
       if (classes.includes("isolate")) {
-        const btn = child.querySelector("button");
-        if (btn && getText(btn).includes("Thought for")) {
+        const btn = child.querySelector("button, div[class*='cursor-pointer']");
+        if (btn && (getText(btn).includes("Thought for") || getText(btn).includes("Thought"))) {
           items.push(parseThought(child));
         }
         continue;
@@ -417,7 +417,7 @@ export const EXTRACT_JS = `(async function () {
 
       // ── Explored / Edited action group (div.relative with button) ──────
       if (child.tagName === "DIV" && classes.includes("relative")) {
-        const btn = child.querySelector(":scope > button");
+        const btn = child.querySelector(":scope > button, :scope > div[class*='cursor-pointer']");
         if (btn) {
           const [v, d] = btnParts(btn);
           if (v === "Explored" || v === "Edited") {
@@ -575,7 +575,7 @@ export const EXTRACT_JS = `(async function () {
       outer: for (const sub of child.children) {
         const subCls = cs(sub);
         if (sub.tagName === "DIV" && subCls.includes("relative")) {
-          const btn = sub.querySelector(":scope > button");
+          const btn = sub.querySelector(":scope > button, :scope > div[class*='cursor-pointer']");
           if (btn) {
             const [v, d] = btnParts(btn);
             if (v && v.includes("Worked")) {
@@ -586,7 +586,7 @@ export const EXTRACT_JS = `(async function () {
           }
         } else if (sub.tagName === "DIV") {
           // One level deeper — some layouts nest the worked button
-          const innerBtn = sub.querySelector(":scope > div.relative > button");
+          const innerBtn = sub.querySelector(":scope > div.relative > button, :scope > div.relative > div[class*='cursor-pointer']");
           if (innerBtn) {
             const [v, d] = btnParts(innerBtn);
             if (v && v.includes("Worked")) {
@@ -650,8 +650,8 @@ export const EXTRACT_JS = `(async function () {
       // ── Standalone thought (no Worked wrapper) ─────────────────────────
       const iso = child.querySelector("div.isolate");
       if (iso) {
-        const btn = iso.querySelector("button");
-        if (btn && getText(btn).includes("Thought for")) {
+        const btn = iso.querySelector("button, div[class*='cursor-pointer']");
+        if (btn && (getText(btn).includes("Thought for") || getText(btn).includes("Thought"))) {
           nodes.push(parseThought(iso));
           // Response text in the same container
           for (const sibCh of child.querySelectorAll("div.px-2.py-1")) {
