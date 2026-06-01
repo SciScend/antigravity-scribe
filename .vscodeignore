@@ -5,6 +5,8 @@ scripts/**
 .agents/**
 .docs/**
 .debug/**
+.antigravitycli/**
+.github/**
 node_modules/**
 tsconfig.json
 .gitignore
@@ -14,8 +16,13 @@ repomix-output.xml
 repomix.config.json
 TODO.md
 GEMINI.md
-CHANGELOG.md
+AGENTS.md
+CLAUDE.md
+.env*
+eslint.config.*
 **/*.map
-assets/**
-!assets/logo/*.png
+assets/logo/**
+dist/*
+!dist/extension.js
+
 

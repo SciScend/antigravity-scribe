@@ -3,6 +3,8 @@
 Capture thinking, tool calls & artifacts from [Google Antigravity IDE](https://antigravity.google) sessions directly into your Obsidian vault as structured Markdown notes.
 No copy-pasting. No manual logging. No digging through AG's folders. Run the capture when your session is done and the note appears.
 
+> [!NOTE]
+> **Disclaimer:** Antigravity Scribe is an independent, open-source project. It is not affiliated with, authorized, sponsored, endorsed, or in any way officially connected with Google LLC or the Google Antigravity IDE team.
 
 ## Features
 
