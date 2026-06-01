@@ -14,8 +14,7 @@
     "vscode": "^1.107.0"
   },
   "categories": [
-    "Other",
-    "Productivity"
+    "Other"
   ],
   "repository": {
     "type": "git",
