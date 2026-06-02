@@ -1,7 +1,7 @@
 {
   "name": "antigravity-scribe",
   "displayName": "Antigravity Scribe",
-  "description": "Capture thinking, tool calls & artifacts to your Obsidian vault",
+  "description": "Compile complex Google Antigravity agent sessions, deep reasoning thoughts, and execution traces into structured, searchable Obsidian notes.",
   "version": "0.2.2",
   "publisher": "sciscend",
   "license": "MIT",
@@ -14,6 +14,9 @@
     "vscode": "^1.107.0"
   },
   "categories": [
+    "AI",
+    "Language Model Tools",
+    "Education",
     "Other"
   ],
   "repository": {
@@ -22,11 +25,15 @@
   },
   "keywords": [
     "antigravity",
+    "agent workflow",
+    "AI",
+    "session",
+    "brain",
+    "chain of thought",
+    "vibe coding",
     "obsidian",
-    "agent",
     "capture",
-    "ai",
-    "session"
+    "Markdown"
   ],
   "activationEvents": [
     "onStartupFinished"
