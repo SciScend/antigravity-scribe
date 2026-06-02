@@ -2,7 +2,7 @@
   "name": "antigravity-scribe",
   "displayName": "Antigravity Scribe",
   "description": "Compile complex Google Antigravity agent sessions, deep reasoning thoughts, and execution traces into structured, searchable Obsidian notes.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "publisher": "sciscend",
   "license": "MIT",
   "icon": "icon.png",

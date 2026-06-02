@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.2.3] - 2026-06-03
+### Updated
+- Description and keywords in marketplace
+
+
 ## [0.2.2] - 2026-06-02
 ### Fixed
 - Bundled the correct logo file into the extension icon.
