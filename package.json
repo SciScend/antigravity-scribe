@@ -2,7 +2,7 @@
   "name": "antigravity-scribe",
   "displayName": "Antigravity Scribe",
   "description": "Capture thinking, tool calls & artifacts to your Obsidian vault",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publisher": "sciscend",
   "license": "MIT",
   "icon": "icon.png",
